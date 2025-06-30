@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Gaming Site</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- 🌐 Top Navigation Bar -->
+  <header class="topnav">
+    <div class="logo">🎮 My Gaming World</div>
+    <div class="hamburger" onclick="toggleSidebar()">☰</div>
+  </header>
+
+  <!-- 🎮 Sidebar Navigation -->
+  <aside class="sidebar" id="sidebar">
+    <nav>
+      <ul>
+        <li class="active"><a href="#">🏠 Home</a></li>
+        <li><a href="#">🔥 Trending</a></li>
+        <li><a href="#">🚗 Racing</a></li>
+        <li><a href="#">🎯 Shooting</a></li>
+        <li><a href="#">🧩 Puzzle</a></li>
+        <li><a href="#">⚔️ Action</a></li>
+        <li><a href="#">💡 Strategy</a></li>
+        <li><a href="#">👾 Multiplayer</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- 🕹️ Main Game Area -->
+  <main class="main-content">
+    <div class="games-container">
+      <div class="game-card">
+        <img src="./assets/game1.jpeg" alt="Car Racing Game">
+        <h3>Car Racing</h3>
+        <a href="games/game1.html">Play Now</a>
+      </div>
+      <div class="game-card">
+        <img src="https://via.placeholder.com/200x120.png?text=Chicken+Game" alt="Chicken Dash">
+        <h3>Chicken Dash</h3>
+        <a href="games/game2.html">Play Now</a>
+      </div>
+      <!-- Add more game-cards -->
+    </div>
+    
+  </main>
+
+  <script>
+    function toggleSidebar() {
+      document.getElementById("sidebar").classList.toggle("show");
+    }
+  </script>
+</body>.
+</html>

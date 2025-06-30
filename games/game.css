@@ -1,0 +1,558 @@
+/* Define a CSS variable for topnav height for easy management */
+    :root {
+      --topnav-height: 60px;
+    }
+
+    /* Global styles for the body */
+    body {
+      margin: 0;
+      background: #000; /* Dark background */
+      display: flex; /* Use flexbox for main layout to arrange sidebar and content */
+      align-items: flex-start; /* Align content to the top initially, adjusts in media queries */
+      min-height: 100vh; /* Ensure body takes at least full viewport height */
+      font-family: 'Inter', sans-serif; /* Modern, clean font */
+      overflow-x: hidden; /* Prevent horizontal scrolling due to fixed elements */
+      position: relative; /* Needed for positioning fixed children relative to the viewport if they use percentages */
+      padding-top: var(--topnav-height); /* Push content down below the fixed topnav */
+    }
+
+    /* --- Top Navigation Bar --- */
+    .topnav {
+      position: fixed;
+      width: 100%;
+      top: 0; /* Fixed to the top */
+      left: 0; /* Spans full width */
+      background: #7f00ff; /* Purple background from user's CSS */
+      color: #fff; /* White text color */
+      padding: 0.5rem 1rem; /* Adjusted padding to better fit 60px height */
+      height: var(--topnav-height); /* Explicit height for consistency */
+      box-sizing: border-box; /* Include padding in height */
+      z-index: 1000; /* Ensure it's on top of everything */
+      display: flex;
+      justify-content: space-between; /* Distribute space between logo, search, and hamburger */
+      align-items: center;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); /* Subtle shadow */
+    }
+    .logo {
+      font-size: 1.4rem;
+      font-weight: bold;
+      padding-left: 10px; /* Add some padding for the logo */
+      flex-shrink: 0; /* Prevent logo from shrinking */
+    }
+    .hamburger {
+      display: none; /* Hidden by default on larger screens */
+      font-size: 1.8rem; /* Slightly larger for touch */
+      cursor: pointer;
+      padding: 5px 10px; /* Padding for easier tapping */
+      border-radius: 5px; /* Rounded corners */
+      transition: background-color 0.3s ease;
+      flex-shrink: 0; /* Prevent hamburger from shrinking */
+    }
+    .hamburger:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* --- Search Bar in Top Nav --- */
+    .search-container {
+        flex-grow: 1; /* Allows it to take up available space */
+        display: flex; /* Use flex to center the input */
+        justify-content: center; /* Center horizontally */
+        align-items: center;
+        padding: 0 20px; /* Padding to prevent it from touching logo/hamburger */
+    }
+
+    .search-input {
+        width: 300px; /* Default width for search bar */
+        padding: 8px 15px;
+        border: 1px solid #9932cc; /* Initial border color */
+        border-radius: 20px; /* Rounded search bar */
+        background-color: rgba(255, 255, 255, 0.1); /* Slightly transparent background */
+        color: #fff;
+        font-size: 1rem;
+        outline: none; /* Remove default focus outline */
+        transition: width 0.3s ease, border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .search-input::placeholder {
+        color: rgba(255, 255, 255, 0.7); /* Lighter placeholder text */
+    }
+
+    .search-input:hover,
+    .search-input:focus {
+        width: 350px; /* Expand on hover/focus */
+        border-color: #0f0; /* Green border on hover/focus */
+        background-color: rgba(255, 255, 255, 0.2); /* Darker background on hover/focus */
+        box-shadow: 0 0 8px rgba(0, 255, 0, 0.5); /* Green glow effect */
+    }
+
+    /* --- Sidebar Navigation Styles --- */
+    .sidebar {
+      width: 200px; /* Fixed width for the sidebar */
+      background-color: #222; /* Dark background for sidebar */
+      color: #fff; /* White text color */
+      padding: 20px 0; /* Vertical padding */
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5); /* Subtle shadow for depth */
+      border-radius: 0 10px 10px 0; /* Rounded corners on the right side */
+      height: calc(100vh - var(--topnav-height)); /* Adjusted height to account for topnav */
+      position: fixed; /* Fixed position so it stays on screen */
+      left: 0; /* Aligned to the left */
+      top: var(--topnav-height); /* Positioned below the topnav */
+      z-index: 100; /* Ensure it's above other content */
+      transition: transform 0.3s ease, left 0.3s ease; /* Smooth transition for hiding/showing */
+    }
+
+    .sidebar nav ul {
+      list-style: none; /* Remove bullet points */
+      padding: 0; /* Remove default padding */
+      margin: 0; /* Remove default margin */
+    }
+
+    .sidebar nav ul li {
+      padding: 10px 20px; /* Padding for list items */
+      border-bottom: 1px solid #333; /* Separator line */
+    }
+
+    .sidebar nav ul li:last-child {
+      border-bottom: none; /* No border for the last item */
+    }
+
+    .sidebar nav ul li a {
+      color: #fff; /* White link color */
+      text-decoration: none; /* Remove underline */
+      display: block; /* Make the whole area clickable */
+      transition: background-color 0.3s ease; /* Smooth hover effect */
+      border-radius: 5px; /* Slightly rounded links */
+      padding: 5px; /* Internal padding for links */
+    }
+
+    .sidebar nav ul li.active a,
+    .sidebar nav ul li a:hover {
+      background-color: #555; /* Darker background on hover/active */
+    }
+
+    /* --- Main content area --- */
+    .main-content {
+        display: flex;
+        flex-direction: column; /* Stack game, info/more games, and bottom ad vertically */
+        align-items: center; /* Center items horizontally within main-content */
+        flex-grow: 1; /* Allow it to take available space */
+        margin-left: 200px; /* Offset to make space for the fixed left sidebar */
+        margin-right: 200px; /* Offset to make space for the fixed right ad */
+        padding: 20px; /* Add some padding around the content */
+        box-sizing: border-box; /* Include padding in element's total width and height */
+        position: relative; /* For potential absolute positioning of children */
+        transition: margin-left 0.5s ease, margin-right 0.5s ease, padding 0.5s ease; /* Smooth transition for layout changes */
+        min-height: calc(100vh - var(--topnav-height) - 40px); /* Adjust min-height to account for topnav and vertical padding */
+        justify-content: flex-start; /* Align content to the top within main-content */
+    }
+
+    /* --- Container for Game Info and More Games --- */
+    .info-and-more-games-container {
+        display: flex; /* Use flexbox to put them side-by-side */
+        justify-content: center; /* Center them within main-content's available space */
+        gap: 20px; /* Space between the info and more games sections */
+        width: 100%; /* Take full width of main-content */
+        max-width: 1000px; /* Max width to keep content readable and prevent overstretching */
+        margin-top: 30px; /* Space between game and this section */
+        flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+        padding-left: 20px; /* Add internal padding for consistent spacing */
+        padding-right: 20px; /* Add internal padding for consistent spacing */
+        box-sizing: border-box;
+    }
+
+    /* --- Game container, holds the iframe and fullscreen button --- */
+    .game-container {
+      position: relative; /* Essential for positioning the fullscreen button inside */
+      width: 800px; /* Initial fixed width for the game */
+      height: 480px; /* Initial fixed height for the game */
+      background-color: #1a1a1a; /* Background for the game area */
+      border-radius: 10px; /* Rounded corners for the game container */
+      overflow: hidden; /* Ensures iframe content doesn't spill out */
+      box-shadow: 0 0 20px rgba(0, 255, 0, 0.5); /* Green glow effect for a gaming feel */
+      transition: all 0.5s ease; /* Smooth transition for size changes */
+      display: flex; /* Use flexbox to center the iframe within */
+      justify-content: center;
+      align-items: center;
+      z-index: 5; /* Ensure it's above some ads initially */
+      margin-top: 20px; /* Add a top margin for spacing from the topnav */
+    }
+
+    iframe {
+      border: none; /* No border for the iframe */
+      width: 100%; /* Iframe fills its container's width */
+      height: 100%; /* Iframe fills its container's height */
+      display: block; /* Removes extra space below the iframe */
+    }
+
+    /* --- Fullscreen Button Styles --- */
+    .fullscreen-button {
+      position: absolute; /* Position relative to .game-container */
+      top: 10px; /* 10px from the top */
+      right: 10px; /* 10px from the right */
+      background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent dark background */
+      color: #fff; /* White text color */
+      border: 1px solid #0f0; /* Green border */
+      padding: 8px 12px; /* Padding inside the button */
+      border-radius: 8px; /* Rounded corners for the button */
+      cursor: pointer; /* Pointer cursor on hover */
+      font-size: 14px; /* Font size */
+      z-index: 10; /* Ensure button is on top of the iframe */
+      transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effects */
+    }
+
+    .fullscreen-button:hover {
+      background-color: rgba(0, 0, 0, 0.9); /* Darker background on hover */
+      transform: scale(1.05); /* Slightly enlarge on hover */
+    }
+
+    /* --- Fullscreen Mode Specific Styles (for native fullscreen API) --- */
+    iframe:-webkit-full-screen {
+        width: 100%;
+        height: 100%;
+        object-fit: contain; /* Scales content to fit, preserving aspect ratio */
+        margin: auto; /* Centers the iframe if there's black space due to aspect ratio */
+        background-color: #000; /* Ensure black bars if content doesn't fill */
+    }
+
+    iframe:-moz-full-screen {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        margin: auto;
+        background-color: #000;
+    }
+
+    iframe:-ms-fullscreen {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        margin: auto;
+        background-color: #000;
+    }
+
+    iframe:fullscreen {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        margin: auto;
+        background-color: #000;
+    }
+
+    /* Class to hide other elements when native fullscreen is active */
+    .hide-on-fullscreen {
+        display: none !important; /* Use !important to override other display properties */
+    }
+
+    /* --- AdSense Placeholders Styling --- */
+    .ad-placeholder {
+      background-color: #333; /* Dark background for ads */
+      color: #fff; /* White text */
+      display: flex; /* Use flexbox to center text inside */
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      font-size: 14px;
+      border-radius: 8px; /* Rounded corners for ads */
+      box-shadow: 0 0 10px rgba(0, 255, 0, 0.3); /* Green glow effect */
+      padding: 10px; /* Internal padding */
+      box-sizing: border-box; /* Include padding in size */
+      flex-shrink: 0; /* Prevent shrinking when space is tight */
+      z-index: 6; /* Slightly above game initially, below fullscreen button */
+      flex-direction: column; /* Stack text vertically */
+      gap: 5px; /* Space between lines of text */
+    }
+
+    #bottom-ad-placeholder {
+      width: 728px; /* Standard leaderboard ad width */
+      height: 90px; /* Standard leaderboard ad height */
+      margin-top: 30px; /* Space between info/more games and bottom ad */
+      z-index: 5;
+    }
+
+    #right-ad-placeholder {
+      width: 160px; /* Standard skyscraper ad width */
+      height: 600px; /* Standard skyscraper ad height */
+      position: fixed; /* Fixed to the viewport */
+      right: 20px; /* 20px from the right edge */
+      top: 50%; /* Vertically center */
+      transform: translateY(-50%); /* Adjust for perfect vertical centering */
+      z-index: 10; /* Above sidebar */
+    }
+
+    /* --- Game Info Section --- */
+    .game-info {
+        padding: 20px;
+        background-color: #1a1a1a;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
+        color: #fff;
+        flex: 1; /* Allow it to grow and shrink */
+        min-width: 300px; /* Minimum width before wrapping */
+        max-width: 450px; /* Max width to control size, adjust as needed */
+        box-sizing: border-box; /* Include padding in width */
+        text-align: justify; /* Justify text */
+    }
+
+    .game-info h2 {
+        color: #0f0;
+        margin-top: 0;
+        margin-bottom: 10px;
+        text-align: left; /* Keep headings left-aligned */
+    }
+
+    .game-info p {
+        margin-bottom: 10px;
+        line-height: 1.5;
+        text-align: justify; /* Justify text */
+    }
+
+    .game-info ul {
+        padding-left: 20px;
+        margin-bottom: 0;
+        text-align: left; /* Keep list items left-aligned */
+    }
+
+    .game-info ul li {
+        margin-bottom: 5px;
+    }
+
+    /* --- More Games Section Styling --- */
+    .more-games-section {
+        padding: 20px;
+        background-color: #1a1a1a;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
+        color: #fff;
+        flex: 1; /* Allow it to grow and shrink */
+        min-width: 300px; /* Minimum width before wrapping */
+        max-width: 450px; /* Max width to control size, adjust as needed */
+        box-sizing: border-box; /* Include padding in width */
+        text-align: center; /* Center content within this box */
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Center content horizontally */
+        justify-content: space-between; /* Space out content and the button */
+    }
+
+    .more-games-section h3 {
+        color: #0f0;
+        margin-top: 0;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #333;
+        margin-bottom: 15px;
+        width: 100%; /* Make border span full width */
+    }
+
+    .more-games-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* Responsive grid */
+        gap: 15px;
+        width: 100%; /* Take full width of its parent */
+        justify-content: center; /* Center items in the grid */
+        margin-bottom: 20px; /* Space before the "More Games" button */
+    }
+
+    .more-games-section .game-thumbnail {
+        display: block;
+        width: 100%; /* Fill grid cell */
+        padding-bottom: 62.5%; /* 16:10 aspect ratio (100/160 * 100%) */
+        position: relative;
+        background-color: #333;
+        border-radius: 8px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        text-decoration: none; /* Remove underline from links */
+    }
+
+    .more-games-section .game-thumbnail:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 10px rgba(0, 255, 0, 0.6);
+    }
+
+    .more-games-section .game-thumbnail img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .more-games-section .game-thumbnail .title {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: #fff;
+        font-size: 0.8em;
+        padding: 5px 0;
+        text-align: center;
+    }
+
+    /* --- More Games Button at bottom right of section --- */
+    .more-games-button-container {
+        width: 100%; /* Take full width of the parent flex item */
+        display: flex;
+        justify-content: flex-end; /* Push button to the right */
+        padding-top: 10px; /* Space from the grid above */
+    }
+
+    .more-games-button {
+        display: inline-flex; /* Use inline-flex for content centering and sizing */
+        align-items: center; /* Center icon and text vertically */
+        gap: 5px; /* Space between text and icon */
+        background-color: #0f0; /* Green background */
+        color: #1a1a1a; /* Dark text for contrast */
+        padding: 8px 15px;
+        border-radius: 20px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+    }
+
+    .more-games-button:hover {
+        background-color: #00cc00; /* Darker green on hover */
+        transform: translateY(-2px); /* Slight lift effect */
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); /* Enhanced shadow */
+    }
+
+    .more-games-button .arrow-symbol {
+        font-size: 1.2em; /* Make the arrow slightly larger */
+        line-height: 1; /* Align with text */
+    }
+
+
+    /* --- Responsive Adjustments --- */
+    @media (max-width: 1200px) {
+        /* Adjustments for medium screens (e.g., smaller desktops, large tablets) */
+        .game-container {
+            width: 600px; /* Smaller game size */
+            height: 360px;
+        }
+        #bottom-ad-placeholder {
+            width: 468px; /* Smaller leaderboard */
+            height: 60px;
+        }
+        .main-content {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+    }
+
+    @media (max-width: 900px) {
+        /* Adjustments for tablets and smaller screens */
+        body {
+            flex-direction: column; /* Stack sidebar and main content vertically */
+            align-items: stretch; /* Stretch to fill width */
+            padding-top: var(--topnav-height); /* Keep padding top for topnav */
+        }
+        /* Mobile-specific sidebar adjustments */
+        .sidebar {
+            width: 250px;
+            height: calc(100vh - var(--topnav-height));
+            position: fixed;
+            top: var(--topnav-height);
+            left: -250px;
+            box-shadow: 5px 0 10px rgba(0,0,0,0.5);
+            border-radius: 0 10px 10px 0;
+            z-index: 200;
+            transition: left 0.3s ease;
+            padding-top: 0;
+        }
+        .sidebar.open {
+            left: 0;
+        }
+        .hamburger {
+            display: block; /* Show hamburger on smaller screens */
+        }
+        .main-content {
+            margin-left: 0;
+            margin-right: 0;
+            padding: 10px;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        #right-ad-placeholder {
+            display: none; /* Hide fixed right ad on smaller screens */
+        }
+
+        .game-container {
+            width: 100%;
+            max-width: 600px;
+            height: calc(100vw * 9 / 16);
+            max-height: 400px;
+            margin-top: 15px;
+        }
+        #bottom-ad-placeholder {
+            width: 320px;
+            height: 50px;
+            margin-top: 20px;
+        }
+        .info-and-more-games-container {
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 20px;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+        .game-info, .more-games-section {
+            max-width: 100%;
+            min-width: unset;
+        }
+        .game-info h2 {
+            text-align: center;
+        }
+        .game-info ul {
+            text-align: left;
+        }
+
+        /* Adjust search bar for smaller screens */
+        .search-container {
+            padding: 0 10px;
+        }
+        .search-input {
+            width: 100%;
+            max-width: 250px;
+        }
+        .search-input:hover,
+        .search-input:focus {
+            width: 100%;
+            max-width: 250px;
+        }
+
+        .more-games-button-container {
+            justify-content: center; /* Center the button on smaller screens */
+        }
+    }
+
+    @media (max-width: 600px) {
+        /* Further adjustments for very small screens (phones) */
+        .sidebar nav ul {
+            flex-direction: column;
+            align-items: center;
+        }
+        .sidebar nav ul li {
+            width: 100%;
+            text-align: center;
+        }
+        #bottom-ad-placeholder {
+            width: 300px;
+            height: 50px;
+        }
+        .more-games-grid {
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+        }
+        /* Make search bar slightly smaller on very small phones */
+        .search-input {
+            max-width: 200px;
+        }
+        .search-input:hover,
+        .search-input:focus {
+            max-width: 200px;
+        }
+    }
